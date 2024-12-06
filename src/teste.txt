@@ -1,0 +1,57 @@
+a b c d e 
+f g h i j
+k l m n o
+p q r s t
+u v x y z
+
+
+BACKUP
+
+
+
+    // BFS 
+    cout << endl << "Algoritmo de busca em largura:" << endl;
+    char* caminho = new char[grafo.getNumVertices()];
+    int tamCaminho;
+
+    auto startTime = chrono::high_resolution_clock::now();
+
+    if (buscaLargura(grafo, inicio, fim, caminho, tamCaminho)) {
+        cout << "Caminho encontrado: ";
+        for (int i = 0; i < tamCaminho; i++) {
+            cout << caminho[i] << " ";
+        }
+        cout << endl;
+    } else {
+        cout << "Caminho não encontrado!" << endl;
+    }
+
+    auto endTime = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(endTime - startTime);
+    cout << "Tempo de execução BFS: " << duration.count() << " microsegundos" << endl;
+
+    delete[] caminho;
+
+
+    // DFS 
+    cout << endl << "Algoritmo de busca em profundidade:" << endl;
+    caminho = new char[grafo.getNumVertices()];
+    tamCaminho = 0;
+
+    startTime = chrono::high_resolution_clock::now();
+
+    if (buscaProfundidade(grafo, inicio, fim, caminho, tamCaminho)) {
+        cout << "Caminho encontrado: ";
+        for (int i = 0; i < tamCaminho; i++) {
+            cout << caminho[i] << " ";
+        }
+        cout << endl;
+    } else {
+        cout << "Caminho não encontrado!" << endl;
+    }
+
+    endTime = chrono::high_resolution_clock::now();
+    duration = chrono::duration_cast<chrono::microseconds>(endTime - startTime);
+    cout << "Tempo de execução DFS: " << duration.count() << " microsegundos" << endl;
+
+    delete[] caminho;
