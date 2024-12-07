@@ -20,6 +20,24 @@ U V Q L M N I H C D E
 # Implementação
 A implementação foi realizada em C++. O labirinto foi modelado como um grafo não direcionado onde cada posição representa um nó. A função heurística utilizada calcula a distância euclidiana entre cada nó e o objetivo.
 
+
+## Características do grafo
+Para aplicar algoritmos de busca informada foi nessário ajustar a estrutura do grafo. Como os algortimos de busca ordenada utilizam as informações do problema para encotrar a solução, foi necessário adicinar o peso às arestas do grafo, simulando a distancia de uma posição até outra. Dessa forma, o grafo utilizado é um grafo não direcionado, ponderado com arestas de peso 1 para qualquer nó vizinho.
+
+## Calculo da função h(n)
+A funão h(n) indica a distância em linha reta do nó n até a meta,ou seja, a estimativa de custo de n até a meta.
+Para calcular a função h(n), utilizou-se a distância euclidiana, calculada a partir dos valores das variações na vertical(y) e na horizontal(x) de uma posição qualquer do labirinto até a meta estabelecida (no caso 'E'), considerando que 1 quadrado em x ou em y representam 1 unidade de distância, assim como os pesos das arestas do grafo. 
+
+<a name="labirinto"></a>
+<p align="center">
+  <img src="./img/deuclidiana.png" alt="Labirinto">
+  <br>
+  <em>Figura 2: Fórmula para calcular a distância euclidiana</em>
+</p>
+
+
+Dessa forma, ao calcular as respectivas distancias para os pares [x,y], foi atribuido os valores a uma estrutura de hash que, dado o valor de uma posição do labirinto (representada por um caractere) é atribuida como chave para um valor real de distância, representando assim a função h(n). Isso foi feito no C++ com a estrutura unordered_map da biblioteca padrão (STL), com um tipo representado por <char,double>. 
+
 ## Descrição dos Algoritmos Implementados
 
 ### A* (A Estrela)
