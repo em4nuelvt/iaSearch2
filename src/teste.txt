@@ -5,53 +5,97 @@ p q r s t
 u v x y z
 
 
-BACKUP
+# Teste 1
+Estatísticas de Memória do A*:
+Máximo de nós na fila de prioridade: 4
+Nós visitados: 21
+Tamanho dos mapas: 41
+Memória total estimada: 518 bytes
+Número de Iterações: 20
+Caminho encontrado pelo A*: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução A*: 86 microsegundos
 
+Estatísticas de Memória da Busca Gulosa:
+Máximo de nós na fila de prioridade: 5
+Nós visitados: 16
+Tamanho dos mapas: 15
+Memória total estimada: 151 bytes
+Número de Iterações: 12
+Caminho encontrado pela Busca Gulosa: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução Busca Gulosa: 34 microsegundos
 
+# Teste 2
+Estatísticas de Memória do A*:
+Máximo de nós na fila de prioridade: 4
+Nós visitados: 21
+Tamanho dos mapas: 41
+Memória total estimada: 518 bytes
+Número de Iterações: 20
+Caminho encontrado pelo A*: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução A*: 108 microsegundos
 
-    // BFS 
-    cout << endl << "Algoritmo de busca em largura:" << endl;
-    char* caminho = new char[grafo.getNumVertices()];
-    int tamCaminho;
+Estatísticas de Memória da Busca Gulosa:
+Máximo de nós na fila de prioridade: 5
+Nós visitados: 16
+Tamanho dos mapas: 15
+Memória total estimada: 151 bytes
+Número de Iterações: 12
+Caminho encontrado pela Busca Gulosa: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução Busca Gulosa: 57 microsegundos
 
-    auto startTime = chrono::high_resolution_clock::now();
+# Teste 3
+Estatísticas de Memória do A*:
+Máximo de nós na fila de prioridade: 4
+Nós visitados: 21
+Tamanho dos mapas: 41
+Memória total estimada: 518 bytes
+Número de Iterações: 20
+Caminho encontrado pelo A*: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução A*: 87 microsegundos
 
-    if (buscaLargura(grafo, inicio, fim, caminho, tamCaminho)) {
-        cout << "Caminho encontrado: ";
-        for (int i = 0; i < tamCaminho; i++) {
-            cout << caminho[i] << " ";
-        }
-        cout << endl;
-    } else {
-        cout << "Caminho não encontrado!" << endl;
-    }
+Estatísticas de Memória da Busca Gulosa:
+Máximo de nós na fila de prioridade: 5
+Nós visitados: 16
+Tamanho dos mapas: 15
+Memória total estimada: 151 bytes
+Número de Iterações: 12
+Caminho encontrado pela Busca Gulosa: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução Busca Gulosa: 38 microsegundos
 
-    auto endTime = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::microseconds>(endTime - startTime);
-    cout << "Tempo de execução BFS: " << duration.count() << " microsegundos" << endl;
+# Teste 4
+Estatísticas de Memória do A*:
+Máximo de nós na fila de prioridade: 4
+Nós visitados: 21
+Tamanho dos mapas: 41
+Memória total estimada: 518 bytes
+Número de Iterações: 20
+Caminho encontrado pelo A*: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução A*: 92 microsegundos
 
-    delete[] caminho;
+Estatísticas de Memória da Busca Gulosa:
+Máximo de nós na fila de prioridade: 5
+Nós visitados: 16
+Tamanho dos mapas: 15
+Memória total estimada: 151 bytes
+Número de Iterações: 12
+Caminho encontrado pela Busca Gulosa: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução Busca Gulosa: 52 microsegundos
 
+# Teste 5
+Estatísticas de Memória do A*:
+Máximo de nós na fila de prioridade: 4
+Nós visitados: 21
+Tamanho dos mapas: 41
+Memória total estimada: 518 bytes
+Número de Iterações: 20
+Caminho encontrado pelo A*: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução A*: 92 microsegundos
 
-    // DFS 
-    cout << endl << "Algoritmo de busca em profundidade:" << endl;
-    caminho = new char[grafo.getNumVertices()];
-    tamCaminho = 0;
-
-    startTime = chrono::high_resolution_clock::now();
-
-    if (buscaProfundidade(grafo, inicio, fim, caminho, tamCaminho)) {
-        cout << "Caminho encontrado: ";
-        for (int i = 0; i < tamCaminho; i++) {
-            cout << caminho[i] << " ";
-        }
-        cout << endl;
-    } else {
-        cout << "Caminho não encontrado!" << endl;
-    }
-
-    endTime = chrono::high_resolution_clock::now();
-    duration = chrono::duration_cast<chrono::microseconds>(endTime - startTime);
-    cout << "Tempo de execução DFS: " << duration.count() << " microsegundos" << endl;
-
-    delete[] caminho;
+Estatísticas de Memória da Busca Gulosa:
+Máximo de nós na fila de prioridade: 5
+Nós visitados: 16
+Tamanho dos mapas: 15
+Memória total estimada: 151 bytes
+Número de Iterações: 12
+Caminho encontrado pela Busca Gulosa: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+Tempo de execução Busca Gulosa: 52 microsegundos 
