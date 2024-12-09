@@ -21,10 +21,33 @@ U V Q L M N I H C D E
 A implementação foi realizada em C++. O labirinto foi modelado como um grafo não direcionado onde cada posição representa um nó. A função heurística utilizada calcula a distância euclidiana entre cada nó e o objetivo.
 
 
-## Características do grafo
+## Características do Grafo Utilizado
 Para aplicar algoritmos de busca informada foi nessário ajustar a estrutura do grafo. Como os algortimos de busca ordenada utilizam as informações do problema para encotrar a solução, foi necessário adicinar o peso às arestas do grafo, simulando a distancia de uma posição até outra. Dessa forma, o grafo utilizado é um grafo não direcionado, ponderado com arestas de peso 1 para qualquer nó vizinho.
 
-## Calculo da função h(n)
+## Fundamentação Teórica
+
+### Busca Informada
+A busca informada, também conhecida como busca heurística, é uma classe de algoritmos de busca que utiliza conhecimento específico do domínio do problema para encontrar soluções que são mais eficientes quando comparadas com a busca cega, por exemplo. Este conhecimento é incorporado através de uma função heurística h(n), que estima o custo do caminho mais barato de um nó n até o objetivo.
+
+#### Função Heurística
+Uma função heurística h(n) deve satisfazer certas propriedades para garantir o comportamento desejado do algoritmo:
+
+1. **Admissibilidade**: h(n) nunca deve superestimar o custo real até o objetivo
+   - h(n) ≤ h*(n), onde h*(n) é o custo real
+   - Garante otimalidade para o A*
+
+2. **Consistência**: Satisfaz a desigualdade triangular
+   - h(n) ≤ c(n,n') + h(n') para todo sucessor n' de n
+   - c(n,n') é o custo do caminho de n a n'
+
+#### Distância Euclidiana como Heurística
+Para o problema do labirinto, utilizamos a distância euclidiana como função heurística:
+- h(n) = √((x₂-x₁)² + (y₂-y₁)²)
+- É admissível pois representa a menor distância possível entre dois pontos
+- É consistente pois satisfaz a desigualdade triangular
+
+
+## Calculo da Função h(n)
 A funão h(n) indica a distância em linha reta do nó n até a meta,ou seja, a estimativa de custo de n até a meta.
 Para calcular a função h(n), utilizou-se a distância euclidiana, calculada a partir dos valores das variações na vertical(y) e na horizontal(x) de uma posição qualquer do labirinto até a meta estabelecida (no caso 'E'), considerando que 1 quadrado em x ou em y representam 1 unidade de distância, assim como os pesos das arestas do grafo. 
 
@@ -38,36 +61,119 @@ Para calcular a função h(n), utilizou-se a distância euclidiana, calculada a 
 
 Dessa forma, ao calcular as respectivas distancias para os pares [x,y], foi atribuido os valores a uma estrutura de hash que, dado o valor de uma posição do labirinto (representada por um caractere) é atribuida como chave para um valor real de distância, representando assim a função h(n). Isso foi feito no C++ com a estrutura unordered_map da biblioteca padrão (STL), com um tipo representado por <char,double>. 
 
+
 ## Descrição dos Algoritmos Implementados
 
+Os algoritmos de busca informada utilizam conhecimento específico do problema (heurística) para tomar decisões sobre qual caminho seguir. A heurística h(n) fornece uma estimativa do custo do nó atual até o objetivo, permitindo que o algoritmo priorize caminhos mais promissores.
+
+Para este problema:
+- Cada nó representa uma posição no labirinto
+- A heurística h(n) é a distância euclidiana até o objetivo
+- As arestas têm peso 1, representando o custo de movimento entre posições adjacentes
+
 ### A* (A Estrela)
-O A* é um algoritmo de busca que combina informações do custo do caminho já percorrido (g) e uma estimativa do custo até o objetivo (h).
+O A* é um algoritmo que combina busca pelo melhor caminho (custo g) com busca informada (heurística h).
 
-- **Funcionamento**:
-  1. **Função de Avaliação**: f(n) = g(n) + h(n)
-     - g(n): custo real do caminho do início até o nó n
-     - h(n): estimativa heurística do custo de n até o objetivo
-  2. **Estruturas**: 
-     - Fila de prioridade (openSet) ordenada por f(n)
-     - Conjunto de nós visitados (closedSet)
-     - Mapas para custos (gScore) e reconstrução do caminho
-  3. **Garantias**:
-     - Completude: Sempre encontra uma solução se existir
-     - Otimalidade: Garante o caminho ótimo se h(n) for admissível
+#### Propriedades do A*
+- **Completude**: A* é completo se:
+   - O fator de ramificação é finito
+   - Todos os custos das ações são ≥ ε (onde ε > 0)
 
-### Busca Gulosa
-A Busca Gulosa é um algoritmo que toma decisões baseando-se apenas na heurística, ignorando o custo do caminho já percorrido.
+- **Otimalidade**: A* é ótimo se:
+   - A heurística h(n) é admissível
+   - Operando em um grafo de árvore
+   - h(n) é consistente (para grafos gerais)
 
-- **Funcionamento**:
-  1. **Função de Avaliação**: f(n) = h(n)
-     - h(n): estimativa heurística do custo até o objetivo
-  2. **Estruturas**:
-     - Fila de prioridade ordenada por h(n)
-     - Conjunto de nós visitados
-     - Mapa para reconstrução do caminho
-  3. **Características**:
-     - Mais simples e rápido que o A*
-     - Não garante caminho ótimo
+- **Complexidade**:
+   - Tempo: O(b^d), onde b é o fator de ramificação e d é a profundidade
+   - Espaço: O(b^d), pois mantém todos os nós na memória
+
+- **Funcionamento Implementado**:
+  1. Mantém duas listas:
+     - Lista aberta (openSet): nós a serem explorados, ordenados por f(n)
+     - Lista fechada (closedSet): nós já visitados
+  
+  2. Para cada nó, a função de avaliação f(n) é calculada da seguinte forma:
+     - g(n): custo real do caminho do início até n
+     - h(n): estimativa do custo de n até o objetivo
+     - f(n) = g(n) + h(n): custo total estimado
+  
+  3. Processo de busca:
+     ```
+     Enquanto openSet não estiver vazia:
+       1. Seleciona nó com menor f(n)
+       2. Se é o objetivo, reconstrói e retorna caminho
+       3. Move nó para closedSet
+       4. Para cada vizinho não visitado:
+          - Calcula novo g = g(atual) + custo_aresta
+          - Se novo caminho é melhor:
+            * Atualiza pai do vizinho
+            * Atualiza g(vizinho)
+            * Atualiza f(vizinho) = g(vizinho) + h(vizinho)
+            * Adiciona vizinho ao openSet
+     ```
+
+  4. Estruturas de dados utilizadas:
+     - `priority_queue`: para openSet, ordenada por f(n)
+     - `unordered_map<char, double>`: para gScore
+     - `unordered_map<char, char>`: para cameFrom (reconstrução do caminho)
+
+### Busca Gulosa (Best-First Search)
+A Busca Gulosa pode ser vista como  uma simplificação do A* que considera apenas a heurística h(n), ignorando o custo do caminho g(n).
+
+#### Propriedades da Busca Gulosa
+- **Completude**: Não é completa em geral
+   - Pode ficar presa em loops infinitos
+   - Completa apenas em espaços de estados finitos com detecção de ciclos
+
+- **Otimalidade**: Não garante otimalidade
+   - Toma decisões localmente ótimas
+   - Pode encontrar caminhos subótimos
+
+- **Complexidade**:
+   - Tempo: O(b^m), onde b é o fator de ramificação e m é a profundidade máxima
+   - Espaço: O(b^m), mantém todos os nós na memória
+
+- **Funcionamento Implementado**:
+  1. Estruturas principais:
+     - Lista aberta: nós a explorar, ordenados por h(n)
+     - Lista fechada: nós já visitados
+  
+  2. Processo de decisão:
+     - Escolhe sempre o nó com menor h(n)
+     - Ignora completamente o custo do caminho (g)
+  
+  3. Algoritmo:
+     ```
+     Enquanto openSet não estiver vazia:
+       1. Seleciona nó com menor h(n)
+       2. Se é o objetivo, reconstrói e retorna caminho
+       3. Move nó para closedSet
+       4. Para cada vizinho não visitado:
+          - Adiciona ao openSet com prioridade h(vizinho)
+          - Registra pai para reconstrução do caminho
+     ```
+
+  4. Estruturas de dados:
+     - `priority_queue`: para openSet, ordenada por h(n)
+     - `unordered_map<char, char>`: para cameFrom
+
+### Comparação de Funcionamento
+- **A***:
+  - Considera custo real (g) + estimativa (h)
+  - Mantém controle de custos acumulados
+  - Garante caminho ótimo se h(n) for admissível
+  - Exemplo: Para nó 'V':
+    * g('U') = 1 (custo de U->V)
+    * h('U') = distância euclidiana até 'E'
+    * f('U') = g('U') + h('U')
+
+- **Busca Gulosa**:
+  - Considera apenas estimativa (h)
+  - Não mantém controle de custos
+  - Mais rápida mas pode não encontrar caminho ótimo
+  - Exemplo: Para nó 'V':
+    * Considera apenas h('U') = distância euclidiana até 'E'
 
 # Medições de Desempenho
 
@@ -90,50 +196,111 @@ Para ambos os algoritmos, foi calculado:
 
 ## Testes para Análise de Desempenho
 
-#### Teste 1:
+### Resultados dos Testes
+
+#### Teste 1
 - **A***
   - Máximo de nós na fila: 4
   - Nós visitados: 21
   - Tamanho dos mapas: 41
   - Memória total: 518 bytes
-  - Caminho: U V Q L M N I H C D E
-  - Tempo: 131 microsegundos
+  - Iterações: 20
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 86 microsegundos
 
 - **Busca Gulosa**
   - Máximo de nós na fila: 5
   - Nós visitados: 16
   - Tamanho dos mapas: 15
   - Memória total: 151 bytes
-  - Caminho: U V Q L M N I H C D E
-  - Tempo: 90 microsegundos
+  - Iterações: 12
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 34 microsegundos
 
-#### Teste 1:
+#### Teste 2
 - **A***
   - Máximo de nós na fila: 4
   - Nós visitados: 21
   - Tamanho dos mapas: 41
   - Memória total: 518 bytes
-  - Caminho: U V Q L M N I H C D E
-  - Tempo: 131 microsegundos
+  - Iterações: 20
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 108 microsegundos
 
 - **Busca Gulosa**
   - Máximo de nós na fila: 5
   - Nós visitados: 16
   - Tamanho dos mapas: 15
   - Memória total: 151 bytes
-  - Caminho: U V Q L M N I H C D E
-  - Tempo: 90 microsegundos
+  - Iterações: 12
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 57 microsegundos
 
+#### Teste 3
+- **A***
+  - Máximo de nós na fila: 4
+  - Nós visitados: 21
+  - Tamanho dos mapas: 41
+  - Memória total: 518 bytes
+  - Iterações: 20
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 87 microsegundos
 
+- **Busca Gulosa**
+  - Máximo de nós na fila: 5
+  - Nós visitados: 16
+  - Tamanho dos mapas: 15
+  - Memória total: 151 bytes
+  - Iterações: 12
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 38 microsegundos
+
+#### Teste 4
+- **A***
+  - Máximo de nós na fila: 4
+  - Nós visitados: 21
+  - Tamanho dos mapas: 41
+  - Memória total: 518 bytes
+  - Iterações: 20
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 92 microsegundos
+
+- **Busca Gulosa**
+  - Máximo de nós na fila: 5
+  - Nós visitados: 16
+  - Tamanho dos mapas: 15
+  - Memória total: 151 bytes
+  - Iterações: 12
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 52 microsegundos
+
+#### Teste 5
+- **A***
+  - Máximo de nós na fila: 4
+  - Nós visitados: 21
+  - Tamanho dos mapas: 41
+  - Memória total: 518 bytes
+  - Iterações: 20
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 92 microsegundos
+
+- **Busca Gulosa**
+  - Máximo de nós na fila: 5
+  - Nós visitados: 16
+  - Tamanho dos mapas: 15
+  - Memória total: 151 bytes
+  - Iterações: 12
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo: 52 microsegundos
 
 ## Observações Encontradas
-- **Optimalidade**: Ambos algoritmos encontraram o caminho ótimo neste caso específico
-- **Tempo de Execução**: Busca Gulosa foi mais rápida que o A*
-- **Consumo de Memória**: A* consumiu mais memória devido ao controle adicional de custos
-- **Completude**: Ambos encontraram solução em todos os testes
+- **Optimalidade**: Ambos algoritmos encontraram o caminho "ótimo" neste caso específico que é a solução esperada
+- **Tempo de Execução**: Busca Gulosa foi mais rápida que o A*, visitou menos nós e teve menor número de iterações
+- **Consumo de Memória**: A* consumiu mais memória devido ao controle adicional de custos e gerenciamento dos nós com estuturas adicionais. 
+- **Completude**: Ambos encontraram solução em todos os testes, embora isso pode não acontecer sempre para o algoritmo de busca gulosa.
 
 ## Análise Comparativa dos Algoritmos
-- **Tempo**: Busca Gulosa mostrou-se mais rápida por sua simplicidade
+- **Tempo**: Busca Gulosa mostrou-se mais rápida por ser mais simples
 - **Memória**: A* utilizou mais memória devido aos mapas adicionais
 - **Completude**: Ambos completos para este problema
 - **Optimalidade**: Ambos ótimos neste caso específico
@@ -155,7 +322,9 @@ Para ambos os algoritmos, foi calculado:
    - Pode falhar em problemas mais complexos
 
 # Conclusão
-A implementação e análise dos algoritmos A* e Busca Gulosa mostrou que, para este problema específico, a Busca Gulosa apresentou melhor desempenho em tempo e memória. No entanto, é importante notar que isso se deve às características particulares do problema e da heurística utilizada.
+A implementação e análise dos algoritmos A* e Busca Gulosa mostrou que, para este problema específico, a Busca Gulosa apresentou melhor desempenho em tempo e memória. No entanto, é importante notar que isso se deve às características particulares do problema e da heurística utilizada. Para esse labirinto menor e com caminhos bem definidos, a relação entre nós vizinhos ficou, de certa forma, "mais simples" e, por isso o algoritmo de busca gulosa teve vantagem. Além disso, é importante destacar que o algoritmo A* gerencia os nós com mais estruturas, o acarreta em mais uso de memória e até mesmo maior tempo de execução para esse problema em específico. Isso acontece porque o A* precisa armazenar os caminhos alternativos e manter em memória os nós da "fronteira" de busca. Porém, por mais que para este problema o algoritmo de busca gulosa tenha sido ótimo e obteve melhor performance, nem sempre isso é observado. É possível que este algoritmo fique preso em loop infinito e reconheça como melhor solução somene mínimos locais, prejudicando assim a eficiência do algoritmo para casos de caminhos mais complexos ou uma rede maior que conecta os nós. 
+
+Portanto, de acordo com o que foi apresentado, é possível concluir que para problemas mais "simples", o algoritmo de busca gulosa atende e é capaz de alcançar a meta, assim como o algoritmo A*. Ambos encontraram a solução ótima e ambos completos. Porém, para outras classes de problema, o algoritmo A* pode performar melhor e apresentar melhor desempenho. Em geral, ambos suficientes para o problema proposto.
 
 
 # Compilação e Execução
