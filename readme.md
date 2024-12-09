@@ -22,7 +22,7 @@ A implementação foi realizada em C++. O labirinto foi modelado como um grafo n
 
 
 ## Características do Grafo Utilizado
-Para aplicar algoritmos de busca informada foi nessário ajustar a estrutura do grafo. Como os algortimos de busca ordenada utilizam as informações do problema para encotrar a solução, foi necessário adicinar o peso às arestas do grafo, simulando a distancia de uma posição até outra. Dessa forma, o grafo utilizado é um grafo não direcionado, ponderado com arestas de peso 1 para qualquer nó vizinho.
+Para aplicar algoritmos de busca informada foi nessário ajustar a estrutura do grafo. Como os algortimos de busca ordenada utilizam as informações do problema para encotrar a solução, foi necessário adicinar o peso às arestas do grafo, simulando a distância de uma posição até outra. Dessa forma, o grafo utilizado é um grafo não direcionado e ponderado, com arestas de peso 1 para qualquer aresta com nó vizinho.
 
 ## Fundamentação Teórica
 
@@ -41,14 +41,14 @@ Uma função heurística h(n) deve satisfazer certas propriedades para garantir 
    - c(n,n') é o custo do caminho de n a n'
 
 #### Distância Euclidiana como Heurística
-Para o problema do labirinto, utilizamos a distância euclidiana como função heurística:
+Para o problema do labirinto, foi utilizada a distância euclidiana como função heurística:
 - h(n) = √((x₂-x₁)² + (y₂-y₁)²)
 - É admissível pois representa a menor distância possível entre dois pontos
 - É consistente pois satisfaz a desigualdade triangular
 
 
 ## Calculo da Função h(n)
-A funão h(n) indica a distância em linha reta do nó n até a meta,ou seja, a estimativa de custo de n até a meta.
+A função h(n) indica a distância em linha reta do nó n até a meta,ou seja, a estimativa de custo de n até a meta.
 Para calcular a função h(n), utilizou-se a distância euclidiana, calculada a partir dos valores das variações na vertical(y) e na horizontal(x) de uma posição qualquer do labirinto até a meta estabelecida (no caso 'E'), considerando que 1 quadrado em x ou em y representam 1 unidade de distância, assim como os pesos das arestas do grafo. 
 
 <a name="labirinto"></a>
@@ -195,7 +195,7 @@ Para ambos os algoritmos, foi calculado:
 # Análise dos Resultados
 
 ## Testes para Análise de Desempenho
-
+Para mensurar e validar o desempenho dos Algoritmos foram executados vários testes. A seguir, destaca-se 5 deles para análise de resultados.
 ### Resultados dos Testes
 
 #### Teste 1
