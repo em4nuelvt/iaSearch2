@@ -8,6 +8,7 @@ vector<char> AStar::encontrarCaminho(
     char fim, 
     unordered_map<char, double>& h_values
 ) {
+    int iteracoes = 0;
     priority_queue<Node, vector<Node>, greater<Node>> openSet;
     unordered_map<char, bool> closedSet;
     unordered_map<char, double> gScore;
@@ -21,6 +22,7 @@ vector<char> AStar::encontrarCaminho(
     gScore[inicio] = 0;
     
     while (!openSet.empty()) {
+        iteracoes++;
         Node current = openSet.top();
         openSet.pop();
         currentOpenSetSize--;
@@ -43,11 +45,12 @@ vector<char> AStar::encontrarCaminho(
                 memStats.closedSetSize * sizeof(char) +
                 memStats.mapsSize * (sizeof(char) + sizeof(double));
                 
-            cout << "Estatísticas de Memória do A*:\n";
-            cout << "Máximo de nós na fila de prioridade: " << memStats.maxOpenSetSize << "\n";
-            cout << "Nós visitados: " << memStats.closedSetSize << "\n";
-            cout << "Tamanho dos mapas: " << memStats.mapsSize << "\n";
-            cout << "Memória total estimada: " << totalMemory << " bytes\n";
+            cout << "Estatísticas de Memória do A*:"<<endl;
+            cout << "Máximo de nós na fila de prioridade: " << memStats.maxOpenSetSize << endl;
+            cout << "Nós visitados: " << memStats.closedSetSize << endl;
+            cout << "Tamanho dos mapas: " << memStats.mapsSize << endl;
+            cout << "Memória total estimada: " << totalMemory << " bytes"<<endl;
+            cout << "Número de Iterações: " << iteracoes << endl;
             
             return path;
         }
