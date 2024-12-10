@@ -309,7 +309,6 @@ Para mensurar e validar o desempenho dos Algoritmos foram executados vários tes
   - Média do tamanho dos mapas: 41
   - Média da memória total: 518
   - Média de iterações: 20
-  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
   - Tempo médio: 93 microsegundos
   
 
@@ -317,9 +316,8 @@ Para mensurar e validar o desempenho dos Algoritmos foram executados vários tes
   - Média do máximo de nós na fila: 5
   - Média dos nós visitados: 16 
   - Média do tamanho dos mapas: 15
-  - Média da memória total: 151,  
+  - Média da memória total: 151
   - Média de iterações: 12
-  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
   - Tempo médio: 46.6 microsegundos
   
 
