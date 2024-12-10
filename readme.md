@@ -1,7 +1,7 @@
 # Comparação de Desempenho entre Algoritmos A* e Busca Gulosa
 
 # Introdução
-Na Inteligência Artificial, algoritmos de busca informada utilizam conhecimento específico do problema para encontrar soluções de forma mais eficiente. Diferentemente das buscas cegas, estes algoritmos usam heurísticas para estimar o custo até o objetivo, permitindo decisões mais inteligentes sobre qual caminho seguir.
+Na área da Inteligência Artificial, os algoritmos de busca informada representam estratégias avançadas que utilizam conhecimento específico do problema para encontrar soluções de maneira mais eficiente. Ao contrário das buscas cegas, esses algoritmos empregam funções heurísticas para estimar o custo até o objetivo, permitindo uma exploração mais direcionada e eficaz do espaço de estados. Em problemas que envolvem a busca por caminhos, como a navegação em labirintos, essas estratégias são aplicadas após modelar o problema como um grafo. Nesse contexto, algoritmos como A* (A estrela) e Busca Gulosa (Best-First Search) se destacam por suas abordagens distintas na utilização de informações heurísticas para alcançar a solução desejada.
 
 # Objetivo 
 Implementar e comparar dois diferentes algoritmos de busca informada (A* e Busca Gulosa) aplicados ao problema do labirinto.
@@ -300,6 +300,29 @@ Para mensurar e validar o desempenho dos Algoritmos foram executados vários tes
 - **Completude**: Ambos encontraram solução em todos os testes, embora isso pode não acontecer sempre para o algoritmo de busca gulosa.
 
 ## Análise Comparativa dos Algoritmos
+
+### Médias dos Resultados 
+
+- **A*** (A estrela)
+  - Média do máximo de nós na fila: 4
+  - Média dos nós visitados: 21
+  - Média do tamanho dos mapas: 41
+  - Média da memória total: 518
+  - Média de iterações: 20
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo médio: 93 microsegundos
+  
+
+- **Busca Gulosa**
+  - Média do máximo de nós na fila: 5
+  - Média dos nós visitados: 16 
+  - Média do tamanho dos mapas: 15
+  - Média da memória total: 151,  
+  - Média de iterações: 12
+  - Caminho: U -> V -> Q -> L -> M -> N -> I -> H -> C -> D -> E
+  - Tempo médio: 46.6 microsegundos
+  
+
 - **Tempo**: Busca Gulosa mostrou-se mais rápida por ser mais simples
 - **Memória**: A* utilizou mais memória devido aos mapas adicionais
 - **Completude**: Ambos completos para este problema
